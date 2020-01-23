@@ -5,7 +5,7 @@ export default {
   },
   created() {},
   computed: {
-    ...mapGetters(["tip", "moduleTip"])
+    ...mapGetters(["moduleTip"])
   },
   methods: {}
 };

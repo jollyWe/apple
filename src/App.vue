@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <div>
-      <router-view></router-view>
-    </div>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -13,11 +11,15 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
+  height: 100%;
+}
+
+.el-menu-item,
+.el-submenu__title {
+  height: 50px !important;
+  line-height: 50px !important;
+  font-size: 12px !important;
 }
 </style>
