@@ -8,7 +8,19 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: () => import("../views/layout/Layout.vue")
+    component: () => import("../views/layout/Layout.vue"),
+    children: [
+      {
+        path: "/user",
+        name: "用户管理",
+        component: () => import("../views/User.vue")
+      },
+      {
+        path: "/menu",
+        name: "菜单管理",
+        component: () => import("../views/Menu.vue")
+      }
+    ]
   },
   {
     path: "/login",

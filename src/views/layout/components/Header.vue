@@ -18,17 +18,27 @@
         <el-menu-item index="3">3333</el-menu-item>
       </el-menu>
     </span>
-    <span class="tool-bar">
+    <span class="userinfo">
+      <el-dropdown @command="handleCommand">
+        <span class="el-dropdown-link lang-inner">
+          <span id="language">中文</span
+          ><i class="el-icon-arrow-down el-icon--right"></i>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="zh_cn:中文">中文</el-dropdown-item>
+          <el-dropdown-item command="en_us:English">English</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
       <!-- 用户信息 -->
       <el-dropdown class="user-info-dropdown" trigger="hover">
-        <span class="el-dropdown-link"
-          ><img src="@assets/images/user.png" />{{ user.name }}</span
+        <span class="el-dropdown-link userinfo-inner"
+          ><img :src="this.userAvatar" />{{ userName }}</span
         >
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>44</el-dropdown-item>
-          <el-dropdown-item>555</el-dropdown-item>
-          <el-dropdown-item>
-            uopp
+          <el-dropdown-item>我的消息</el-dropdown-item>
+          <el-dropdown-item>设置</el-dropdown-item>
+          <el-dropdown-item @click.native="logout">
+            退出登录
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -40,18 +50,38 @@
 export default {
   data() {
     return {
-      user: {
-        name: "apple",
-        avatar: ""
-      }
+      isCollapse: false,
+      userName: "Louis",
+      userAvatar: "",
+      activeIndex: 1
     };
   },
+  methods: {
+    // 退出登录
+    logout() {
+      this.$confirm("确认退出吗?", "提示", {
+        type: "warning"
+      })
+        .then(() => {
+          sessionStorage.removeItem("user");
+          this.$router.push("/login");
+        })
+        .catch(() => {});
+    },
+    // 语言切换
+    handleCommand(command) {
+      let array = command.split(":");
+      let lang = array[0] === "" ? "zh_cn" : array[0];
+      let label = array[1];
+      document.getElementById("language").innerHTML = label;
+      this.$i18n.locale = lang;
+    }
+  },
   mounted() {
-    this.sysName = "Apple";
     var user = sessionStorage.getItem("user");
     if (user) {
-      this.name = user;
-      this.avatar = require("@assets/images/user.png");
+      this.userName = user;
+      this.userAvatar = require("@/assets/images/user.png");
     }
   }
 };
@@ -90,10 +120,16 @@ export default {
       }
     }
   }
-  .tool-bar {
+  .userinfo {
     float: right;
+    .lang-inner {
+      font-size: 12px;
+      cursor: pointer;
+      color: #fff;
+    }
     .user-info-dropdown {
       font-size: 12px;
+      padding-left: 15px;
       padding-right: 20px;
       color: #fff;
       cursor: pointer;

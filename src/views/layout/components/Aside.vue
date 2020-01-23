@@ -1,8 +1,8 @@
 <template>
   <div class="menu-bar-container">
     <div class="logo w-200">
-      <img src="@/assets/logo.png" />
-      <div>apple</div>
+      <img :src="this.logo" />
+      <div>{{ sysName }}</div>
     </div>
     <el-menu
       default-active="1-4-1"
@@ -11,15 +11,17 @@
       @close="handleClose"
       :collapse="isCollapse"
     >
-      <el-submenu index="">
+      <el-submenu index="1">
         <template slot="title">
           <i class="el-icon-location"></i>
-          <span slot="title">导航一</span>
+          <span slot="title">系统管理</span>
         </template>
-        <el-submenu index="1-4">
-          <span slot="title">选项4</span>
-          <el-menu-item index="1-4-1">选项1</el-menu-item>
-        </el-submenu>
+        <el-menu-item index="1-1" @click="$router.push('user')">{{
+          $t("sys.userMng")
+        }}</el-menu-item>
+        <el-menu-item index="1-2" @click="$router.push('menu')">{{
+          $t("sys.menuMng")
+        }}</el-menu-item>
       </el-submenu>
       <el-menu-item index="2">
         <i class="el-icon-menu"></i>
@@ -37,6 +39,8 @@
 export default {
   data() {
     return {
+      sysName: "Apple",
+      logo: "",
       isCollapse: false
     };
   },
@@ -47,6 +51,10 @@ export default {
     handleClose(key, keyPath) {
       console.log(key, keyPath);
     }
+  },
+  mounted() {
+    this.sysName = "Apple";
+    this.logo = require("@/assets/logo.png");
   }
 };
 </script>

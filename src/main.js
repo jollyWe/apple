@@ -9,6 +9,7 @@ import mixins from "./mixins";
 //引入svg组件
 import SvgIcon from "@/components/SvgIcon.vue";
 import api from "./api"; // 导入api接口
+import i18n from "./i18n";
 
 Vue.prototype.$api = api; // 将api挂载到vue的原型上
 
@@ -21,6 +22,7 @@ Vue.config.productionTip = false;
 if (process.env.NODE_ENV !== "production") require("./mock");
 
 new Vue({
+  i18n,
   router,
   store,
   render: h => h(App)

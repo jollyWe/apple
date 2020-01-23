@@ -22,4 +22,7 @@ export default {
   line-height: 50px !important;
   font-size: 12px !important;
 }
+.el-dropdown-menu__item {
+  font-size: 12px !important;
+}
 </style>
