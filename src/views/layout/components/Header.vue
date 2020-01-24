@@ -1,9 +1,14 @@
 <template>
-  <div class="headbar">
+  <div
+    class="headbar"
+    :class="isCollapse ? 'position-collapse-left' : 'position-left'"
+  >
     <!-- 导航菜单隐藏显示切换 -->
-    <span class="hamburg">
-      <i class="el-icon-menu"></i>
+    <span class="hamburger-container">
+      <Hamburger :toggleClick="onCollapse" :isActive="isCollapse"></Hamburger>
     </span>
+    <!-- <i class="el-icon-menu" @click="onCollapse"></i> -->
+
     <!-- 导航菜单 -->
     <span class="nav-bar">
       <el-menu
@@ -19,16 +24,8 @@
       </el-menu>
     </span>
     <span class="userinfo">
-      <el-dropdown @command="handleCommand">
-        <span class="el-dropdown-link lang-inner">
-          <span id="language">中文</span
-          ><i class="el-icon-arrow-down el-icon--right"></i>
-        </span>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="zh_cn:中文">中文</el-dropdown-item>
-          <el-dropdown-item command="en_us:English">English</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+      <!-- 语言切换 -->
+      <LangSelector class="lang-selector"></LangSelector>
       <!-- 用户信息 -->
       <el-dropdown class="user-info-dropdown" trigger="hover">
         <span class="el-dropdown-link userinfo-inner"
@@ -47,16 +44,26 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+import Hamburger from "@/components/Hamburger";
+import LangSelector from "@/components/LangSelector";
 export default {
+  components: {
+    Hamburger,
+    LangSelector
+  },
   data() {
     return {
-      isCollapse: false,
       userName: "Louis",
       userAvatar: "",
       activeIndex: 1
     };
   },
   methods: {
+    // 折叠导航栏
+    onCollapse: function() {
+      this.$store.commit("onCollapse");
+    },
     // 退出登录
     logout() {
       this.$confirm("确认退出吗?", "提示", {
@@ -67,14 +74,6 @@ export default {
           this.$router.push("/login");
         })
         .catch(() => {});
-    },
-    // 语言切换
-    handleCommand(command) {
-      let array = command.split(":");
-      let lang = array[0] === "" ? "zh_cn" : array[0];
-      let label = array[1];
-      document.getElementById("language").innerHTML = label;
-      this.$i18n.locale = lang;
     }
   },
   mounted() {
@@ -83,6 +82,11 @@ export default {
       this.userName = user;
       this.userAvatar = require("@/assets/images/user.png");
     }
+  },
+  computed: {
+    ...mapState({
+      isCollapse: state => state.app.isCollapse
+    })
   }
 };
 </script>
@@ -99,12 +103,19 @@ export default {
   border-left-style: solid;
 
   background: #4b5f6e;
-  .hamburg {
-    margin-left: auto;
+  .hamburger-container {
+    width: 55px;
+    height: 50px;
     float: left;
-    width: 52px;
-    padding-left: 20px;
-    color: #fff;
+    cursor: pointer;
+    border-color: rgba(111, 123, 131, 0.8);
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-right-width: 1px;
+    border-right-style: solid;
+    padding-top: 15px;
+    padding-left: 15px;
+    // background: #504e6180;
     background: #4b5f6e;
   }
   .nav-bar {
@@ -122,11 +133,7 @@ export default {
   }
   .userinfo {
     float: right;
-    .lang-inner {
-      font-size: 12px;
-      cursor: pointer;
-      color: #fff;
-    }
+
     .user-info-dropdown {
       font-size: 12px;
       padding-left: 15px;
@@ -143,10 +150,10 @@ export default {
     }
   }
 }
-.menu-bar-width {
+.position-left {
   left: 200px;
 }
-.menu-bar-collapse-width {
+.position-collapse-left {
   left: 65px;
 }
 </style>

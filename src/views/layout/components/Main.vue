@@ -1,5 +1,12 @@
 <template>
-  <div id="main-container" class="main-container">
+  <div
+    id="main-container"
+    class="main-container"
+    :class="
+      $store.state.app.isCollapse ? 'position-collapse-left' : 'position-left'
+    "
+  >
+    <BreadCrumb></BreadCrumb>
     <!-- 主内容区域 -->
     <div class="main-content">
       <keep-alive>
@@ -12,7 +19,11 @@
 </template>
 
 <script>
+import BreadCrumb from "@components/BreadCrumb";
 export default {
+  components: {
+    BreadCrumb
+  },
   data() {
     return {};
   }
@@ -21,10 +32,10 @@ export default {
 
 <style scoped lang="scss">
 .main-container {
-  padding: 0 5px 5px;
+  // padding: 0 5px 5px;
   position: absolute;
   top: 50px;
-  left: 200px;
+  // left: 200px;
   right: 0;
   bottom: 0px;
   // background: rgba(56, 5, 114, 0.5);
